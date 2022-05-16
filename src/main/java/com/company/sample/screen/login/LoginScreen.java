@@ -6,6 +6,7 @@ import io.jmix.securityui.authentication.AuthDetails;
 import io.jmix.securityui.authentication.LoginScreenSupport;
 import io.jmix.ui.JmixApp;
 import io.jmix.ui.Notifications;
+import io.jmix.ui.WebBrowserTools;
 import io.jmix.ui.action.Action;
 import io.jmix.ui.component.*;
 import io.jmix.ui.navigation.Route;
@@ -19,7 +20,9 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 @UiController("LoginScreen")
 @UiDescriptor("login-screen.xml")
@@ -55,6 +58,9 @@ public class LoginScreen extends Screen {
 
     @Autowired
     private JmixApp app;
+
+    @Autowired
+    private WebBrowserTools webBrowserTools;
 
     private final Logger log = LoggerFactory.getLogger(LoginScreen.class);
 
@@ -123,5 +129,19 @@ public class LoginScreen extends Screen {
                     .withDescription(messages.getMessage(getClass(), "badCredentials"))
                     .show();
         }
+    }
+
+    @Subscribe("loginGoogle")
+    public void onLoginGoogle(Action.ActionPerformedEvent event) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("target", "_self");
+        webBrowserTools.showWebPage("/oauth2/authorization/google", params);
+    }
+
+    @Subscribe("loginGitHub")
+    public void onLoginGitHub(Action.ActionPerformedEvent event) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("target", "_self");
+        webBrowserTools.showWebPage("/oauth2/authorization/github", params);
     }
 }
