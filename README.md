@@ -1,3 +1,6 @@
+**ATTENTION: this repository is deprecated in favor of https://github.com/jmix-framework/jmix-samples**
+
+
 # Jmix Social Login Sample
 
 ## Overview
